@@ -1,9 +1,7 @@
 from django.contrib import admin
 from .models import College, Program, Thesis, Tag
 
-@admin.register(College)
-@admin.register(Program)
-@admin.register(Thesis)
-@admin.register(Tag)
-
-# Register your models here.
+admin.site.register(College)
+admin.site.register(Program)
+admin.site.register(Thesis)
+admin.site.register(Tag)
