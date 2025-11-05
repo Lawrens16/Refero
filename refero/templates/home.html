@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home • Refero{% endblock %}
+
+{% block content %}
+<div class="bg-gray-50 min-h-screen py-8">
+  <div class="max-w-7xl mx-auto px-4">
+    <!-- CollegeFilter (Bootstrap Carousel) -->
+    <div class="bg-white border-b border-gray-200 py-8">
+      <div class="max-w-7xl mx-auto px-4">
+        <div id="collegeCarousel" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-indicators" style="bottom:-24px;">
+            <button type="button" data-bs-target="#collegeCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="College of Science"></button>
+            <button type="button" data-bs-target="#collegeCarousel" data-bs-slide-to="1" aria-label="College of Engineering"></button>
+            <button type="button" data-bs-target="#collegeCarousel" data-bs-slide-to="2" aria-label="College of Arts and Letters"></button>
+            <button type="button" data-bs-target="#collegeCarousel" data-bs-slide-to="3" aria-label="College of Business"></button>
+            <button type="button" data-bs-target="#collegeCarousel" data-bs-slide-to="4" aria-label="College of Agriculture"></button>
+            <button type="button" data-bs-target="#collegeCarousel" data-bs-slide-to="5" aria-label="College of Education"></button>
+          </div>
+
+          <div class="carousel-inner text-center">
+            <div class="carousel-item active">
+              <div class="d-flex flex-column align-items-center">
+                <div class="w-32 h-32 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg shadow-lg d-flex align-items-center justify-content-center">
+                  <span class="text-white text-3xl">CS</span>
+                </div>
+                <h2 class="text-gray-900 mt-3">College of Science</h2>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="d-flex flex-column align-items-center">
+                <div class="w-32 h-32 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg shadow-lg d-flex align-items-center justify-content-center">
+                  <span class="text-white text-3xl">CE</span>
+                </div>
+                <h2 class="text-gray-900 mt-3">College of Engineering</h2>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="d-flex flex-column align-items-center">
+                <div class="w-32 h-32 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg shadow-lg d-flex align-items-center justify-content-center">
+                  <span class="text-white text-3xl">CAL</span>
+                </div>
+                <h2 class="text-gray-900 mt-3">College of Arts and Letters</h2>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="d-flex flex-column align-items-center">
+                <div class="w-32 h-32 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg shadow-lg d-flex align-items-center justify-content-center">
+                  <span class="text-white text-3xl">CB</span>
+                </div>
+                <h2 class="text-gray-900 mt-3">College of Business</h2>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="d-flex flex-column align-items-center">
+                <div class="w-32 h-32 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg shadow-lg d-flex align-items-center justify-content-center">
+                  <span class="text-white text-3xl">CA</span>
+                </div>
+                <h2 class="text-gray-900 mt-3">College of Agriculture</h2>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="d-flex flex-column align-items-center">
+                <div class="w-32 h-32 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg shadow-lg d-flex align-items-center justify-content-center">
+                  <span class="text-white text-3xl">CED</span>
+                </div>
+                <h2 class="text-gray-900 mt-3">College of Education</h2>
+              </div>
+            </div>
+          </div>
+
+          <button class="carousel-control-prev" type="button" data-bs-target="#collegeCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#collegeCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+      <div class="filter-grid">
+        <div class="relative">
+          <label class="block text-gray-700 mb-2">Search</label>
+          <div class="search-wrap">
+            <span class="search-icon">🔎</span>
+            <input type="text" placeholder="Search by title, author, or tag..." class="input" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-gray-700 mb-2">Sort by</label>
+          <select class="select">
+            <option value="date">Sort by Date</option>
+            <option value="score">Sort by Evaluation Score</option>
+            <option value="ai">Sort by AI Assessment</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-gray-700 mb-2">College</label>
+          <select class="select">
+            <option>All Colleges</option>
+            <option>College of Science</option>
+            <option>College of Engineering</option>
+            <option>College of Arts and Letters</option>
+            <option>College of Business</option>
+          </select>
+        </div>
+      </div>
+      <p class="text-gray-600 mt-4">Showing 3 theses</p>
+    </div>
+
+    <div class="hidden md:block bg-white rounded-lg shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead class="bg-gray-50 border-b border-gray-200">
+            <tr>
+              <th class="cell">Title</th>
+              <th class="cell">Authors</th>
+              <th class="cell">Date</th>
+              <th class="cell">Program</th>
+              <th class="cell">Score</th>
+              <th class="cell">Tags</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            <tr class="row-hover">
+              <td class="cell">
+                <div class="flex items-start space-x-2">
+                  <img src="https://placehold.co/20x20/2563eb/ffffff" class="icon" alt="" />
+                  <span class="text-gray-900">Machine Learning Applications in Agricultural Pest Detection</span>
+                </div>
+              </td>
+              <td class="cell"><span class="muted">Juan Dela Cruz, Maria Santos</span></td>
+              <td class="cell"><span class="muted">10/15/2024</span></td>
+              <td class="cell"><span class="muted">MS Computer Science</span></td>
+              <td class="cell">
+                <div class="flex items-center space-x-1"><span class="star">★</span><span class="text-gray-900">4.8</span></div>
+              </td>
+              <td class="cell">
+                <div class="tags">
+                  <span class="tag">AI</span>
+                  <span class="tag">Machine Learning</span>
+                  <span class="tag">Agriculture</span>
+                </div>
+              </td>
+            </tr>
+            <tr class="row-hover">
+              <td class="cell">
+                <div class="flex items-start space-x-2">
+                  <img src="https://placehold.co/20x20/2563eb/ffffff" class="icon" alt="" />
+                  <span class="text-gray-900">Natural Language Processing for Philippine Languages</span>
+                </div>
+              </td>
+              <td class="cell"><span class="muted">Isabel Cruz, Ramon Santos</span></td>
+              <td class="cell"><span class="muted">08/30/2024</span></td>
+              <td class="cell"><span class="muted">MS Computer Science</span></td>
+              <td class="cell">
+                <div class="flex items-center space-x-1"><span class="star">★</span><span class="text-gray-900">4.7</span></div>
+              </td>
+              <td class="cell">
+                <div class="tags">
+                  <span class="tag">NLP</span>
+                  <span class="tag">AI</span>
+                  <span class="tag">Linguistics</span>
+                </div>
+              </td>
+            </tr>
+            <tr class="row-hover">
+              <td class="cell">
+                <div class="flex items-start space-x-2">
+                  <img src="https://placehold.co/20x20/2563eb/ffffff" class="icon" alt="" />
+                  <span class="text-gray-900">Structural Analysis of Bamboo Composite Materials</span>
+                </div>
+              </td>
+              <td class="cell"><span class="muted">Carlos Gomez</span></td>
+              <td class="cell"><span class="muted">10/01/2024</span></td>
+              <td class="cell"><span class="muted">MS Civil Engineering</span></td>
+              <td class="cell">
+                <div class="flex items-center space-x-1"><span class="star">★</span><span class="text-gray-900">4.6</span></div>
+              </td>
+              <td class="cell">
+                <div class="tags">
+                  <span class="tag">Engineering</span>
+                  <span class="tag">Materials Science</span>
+                  <span class="tag">Sustainability</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="md:hidden space-y-4">
+      <div class="card">
+        <div class="card-title">
+          <img src="https://placehold.co/20x20/2563eb/ffffff" class="icon" alt="" />
+          <h3 class="text-gray-900">Machine Learning Applications in Agricultural Pest Detection</h3>
+        </div>
+        <div class="space-y-2">
+          <div class="muted">Juan Dela Cruz, Maria Santos</div>
+          <div class="muted">10/15/2024</div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-1"><span class="star">★</span><span class="text-gray-900">4.8</span></div>
+            <div class="tags"><span class="tag">AI</span><span class="tag">Machine Learning</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          <img src="https://placehold.co/20x20/2563eb/ffffff" class="icon" alt="" />
+          <h3 class="text-gray-900">Natural Language Processing for Philippine Languages</h3>
+        </div>
+        <div class="space-y-2">
+          <div class="muted">Isabel Cruz, Ramon Santos</div>
+          <div class="muted">08/30/2024</div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-1"><span class="star">★</span><span class="text-gray-900">4.7</span></div>
+            <div class="tags"><span class="tag">NLP</span><span class="tag">AI</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+

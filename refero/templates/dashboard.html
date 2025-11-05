@@ -1,1 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard · Refero{% endblock %}
+
+{% block content %}
+  <!-- Toolbar (simplified Zotero-like) -->
+  <div class="toolbar mb-3 d-flex align-items-center gap-2 flex-wrap">
+    <button class="btn btn-sm btn-primary">New Item</button>
+    <button class="btn btn-sm btn-outline-secondary">New Collection</button>
+    <div class="vr"></div>
+    <button class="btn btn-sm btn-outline-secondary">Import</button>
+    <button class="btn btn-sm btn-outline-secondary">Export</button>
+    <div class="ms-auto d-flex gap-2 align-items-center">
+      <input class="form-control form-control-sm" style="width: 240px;" placeholder="Quick search...">
+      <button class="btn btn-sm btn-outline-secondary">Filter</button>
+    </div>
+  </div>
+
+  <!-- Three-pane layout -->
+  <div class="zotero-like-layout">
+    <!-- Left: Collections -->
+    <aside class="pane pane-left">
+      <div class="pane-header">Collections</div>
+      <div class="pane-body">
+        <ul class="list-unstyled collections-list">
+          <li class="collection active">My Library</li>
+          <li class="collection">College of Science
+            <ul class="list-unstyled ms-3">
+              <li class="collection">Biology</li>
+              <li class="collection">Chemistry</li>
+              <li class="collection">Physics</li>
+            </ul>
+          </li>
+          <li class="collection">College of Engineering</li>
+          <li class="collection">Tags</li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Center: Items list -->
+    <section class="pane pane-center">
+      <div class="pane-header d-flex align-items-center justify-content-between">
+        <span>Items</span>
+        <div class="d-flex gap-2">
+          <select class="form-select form-select-sm" style="width: 160px;">
+            <option>Sort by Title</option>
+            <option>Sort by Author</option>
+            <option>Sort by Year</option>
+          </select>
+        </div>
+      </div>
+      <div class="pane-body">
+        <div class="table-responsive">
+          <table class="table table-hover table-sm align-middle mb-0 items-table">
+            <thead>
+              <tr>
+                <th style="width: 28px;"><input type="checkbox"></th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Year</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="table-active">
+                <td><input type="checkbox" checked></td>
+                <td>Understanding Research Management Systems</td>
+                <td>A. Smith</td>
+                <td>2023</td>
+                <td>Thesis</td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>Applications of AI in Libraries</td>
+                <td>J. Doe</td>
+                <td>2022</td>
+                <td>Thesis</td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>Open Access Repositories</td>
+                <td>M. Lee</td>
+                <td>2021</td>
+                <td>Paper</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right: Item details -->
+    <aside class="pane pane-right">
+      <div class="pane-header">Details</div>
+      <div class="pane-body">
+        <div class="mb-3">
+          <label class="form-label form-label-sm">Title</label>
+          <input class="form-control form-control-sm" value="Understanding Research Management Systems">
+        </div>
+        <div class="row g-2 mb-3">
+          <div class="col-8">
+            <label class="form-label form-label-sm">Author</label>
+            <input class="form-control form-control-sm" value="A. Smith">
+          </div>
+          <div class="col-4">
+            <label class="form-label form-label-sm">Year</label>
+            <input class="form-control form-control-sm" value="2023">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label form-label-sm">Abstract</label>
+          <textarea class="form-control form-control-sm" rows="6">Short abstract goes here...</textarea>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-sm btn-primary">Save</button>
+          <button class="btn btn-sm btn-outline-secondary">Cancel</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+{% endblock %}
 
