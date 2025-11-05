@@ -14,8 +14,26 @@ class SignUpView(CreateView):
 class HomePageView(ListView):
     model = Thesis
     context_object_name = 'base'
-    template_name = "base.html"
+    template_name = "dashboard.html"
     paginate_by = 3 
 
 
 # Create your views here.
+
+def frontend_home(request):
+    return render(request, "home.html")
+
+
+def frontend_theses(request):
+    return render(request, "theses.html")
+
+
+def frontend_upload(request):
+    return render(request, "upload.html")
+
+
+def frontend_profile(request):
+    return render(request, "profile.html")
+
+def frontend_dashboard(request):
+    return render(request, "dashboard.html")
