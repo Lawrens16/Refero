@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-r&drf-$=+tee19253f%l-x8*38@%c#!8q1#)2)=a1q(%u+w5sq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'pwa',
     'thesis',
 ]
+
+SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',

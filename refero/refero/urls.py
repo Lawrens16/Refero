@@ -20,5 +20,8 @@ from thesis import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.HomePageView.as_view(), name='home'),
+    path('', views.frontend_home, name='home'),
+    path('theses/', views.frontend_theses, name='theses'),
+    path('upload-thesis/', views.frontend_upload, name='upload'),
+    path('profile/', views.frontend_profile, name='profile'),
 ]

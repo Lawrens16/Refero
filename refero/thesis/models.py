@@ -41,3 +41,7 @@ class Thesis(BaseModel):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        verbose_name = "Thesis"
+        verbose_name_plural = "Theses"
