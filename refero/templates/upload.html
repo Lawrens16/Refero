@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load widget_tweaks %}
 
 {% block title %}Upload Thesis • Refero{% endblock %}
 
@@ -7,52 +8,92 @@
 <div class="bg-gray-50 min-h-screen py-8">
   <div class="max-w-3xl mx-auto px-4">
     <div class="mb-8">
-      <h1 class="text-gray-900 mb-2">Upload Thesis</h1>
+      <h1 class="text-3xl font-semibold text-gray-900">Upload Thesis</h1>
       <p class="text-gray-600">Submit your thesis to the Refero library</p>
     </div>
 
-    <form method="post" enctype="multipart/form-data" class="bg-white rounded-lg shadow-sm p-6 space-y-6">
+    <form method="post" enctype="multipart/form-data" class="bg-white rounded-2xl shadow-sm p-6 space-y-6">
       {% csrf_token %}
 
-      <div>
-        <label class="block text-gray-700 mb-2">Thesis Title <span class="text-red-500">*</span></label>
-        <input type="text" name="title" class="input" placeholder="Enter the thesis title" required />
-      </div>
-
-      <div>
-        <label class="block text-gray-700 mb-2">Authors <span class="text-red-500">*</span></label>
-        <input type="text" name="authors" class="input" placeholder="Separate multiple authors with commas" required />
-        <p class="text-gray-500 text-sm mt-1">Example: Juan Dela Cruz, Maria Santos</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label class="block text-gray-700 mb-2">Program <span class="text-red-500">*</span></label>
-          <input type="text" name="program" class="input" placeholder="e.g., MS Computer Science" required />
+      {% if form.non_field_errors %}
+        <div class="rounded-md bg-red-50 border border-red-200 text-red-700 p-4 text-sm">
+          {{ form.non_field_errors }}
         </div>
+      {% endif %}
+
+      <div class="grid gap-6">
         <div>
-          <label class="block text-gray-700 mb-2">College <span class="text-red-500">*</span></label>
-          <select name="college" class="select" required>
-            <option value="">Select College</option>
-            <option value="science">College of Science</option>
-            <option value="engineering">College of Engineering</option>
-            <option value="arts">College of Arts and Letters</option>
-            <option value="business">College of Business</option>
-            <option value="agriculture">College of Agriculture</option>
-            <option value="education">College of Education</option>
-          </select>
+          <label class="block text-gray-700 mb-2">{{ form.title.label }} <span class="text-red-500">*</span></label>
+          {% render_field form.title class="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" %}
+          {{ form.title.errors }}
         </div>
-      </div>
 
-      <div>
-        <label class="block text-gray-700 mb-2">Tags</label>
-        <input type="text" name="tags" class="input" placeholder="AI, Machine Learning, Agriculture" />
-        <p class="text-gray-500 text-sm mt-1">Separate tags with commas</p>
-      </div>
+        <div>
+          <label class="block text-gray-700 mb-2">{{ form.abstract.label }}</label>
+          {% render_field form.abstract class="w-full rounded-2xl border border-gray-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" %}
+          {{ form.abstract.errors }}
+        </div>
 
-      <div>
-        <label class="block text-gray-700 mb-2">Upload PDF <span class="text-red-500">*</span></label>
-        <input type="file" name="file" accept=".pdf" class="file" required />
+        <div>
+          <label class="block text-gray-700 mb-2">{{ form.authors.label }} <span class="text-red-500">*</span></label>
+          {% render_field form.authors class="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" %}
+          {{ form.authors.errors }}
+        </div>
+
+        <div>
+          <label class="block text-gray-700 mb-2">{{ form.adviser.label }}</label>
+          {% render_field form.adviser class="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" %}
+          {{ form.adviser.errors }}
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-gray-700 mb-2">{{ form.year_submitted.label }} <span class="text-red-500">*</span></label>
+            {% render_field form.year_submitted class="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" %}
+            {{ form.year_submitted.errors }}
+          </div>
+          <div>
+            <label class="block text-gray-700 mb-2">{{ form.college.label }} <span class="text-red-500">*</span></label>
+            {% render_field form.college class="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" %}
+            {{ form.college.errors }}
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-gray-700 mb-2">{{ form.program.label }} <span class="text-red-500">*</span></label>
+          {% render_field form.program class="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" %}
+          {{ form.program.errors }}
+        </div>
+
+        <div>
+          <label class="block text-gray-700 mb-3 flex items-center">{{ form.tags.label }}<span class="ml-1 text-sm text-gray-400">(optional)</span></label>
+          <div class="grid gap-3 md:grid-cols-2">
+            {% for checkbox in form.tags %}
+              <label class="flex items-center space-x-2 rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700">
+                {{ checkbox.tag }}
+                <span>{{ checkbox.choice_label }}</span>
+              </label>
+            {% empty %}
+              <p class="text-gray-500">No tags defined yet.</p>
+            {% endfor %}
+          </div>
+          {{ form.tags.errors }}
+        </div>
+
+        <div>
+          <label class="block text-gray-700 mb-2">{{ form.pdf_file.label }} <span class="text-red-500">*</span></label>
+          {% render_field form.pdf_file class="w-full rounded-xl border border-dashed border-gray-300 px-4 py-5 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500" %}
+          {% if form.pdf_file.help_text %}
+            <p class="text-sm text-gray-500 mt-1">{{ form.pdf_file.help_text }}</p>
+          {% endif %}
+          {{ form.pdf_file.errors }}
+        </div>
+
+        <div>
+          <label class="block text-gray-700 mb-2">{{ form.panel_score.label }} <span class="text-gray-400 text-sm">(optional)</span></label>
+          {% render_field form.panel_score class="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" %}
+          {{ form.panel_score.errors }}
+        </div>
       </div>
 
       <div class="flex justify-end space-x-4">
@@ -60,16 +101,6 @@
         <button type="submit" class="btn btn-primary">Upload Thesis</button>
       </div>
     </form>
-
-    <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4">
-      <p class="text-blue-900 mb-2">Django Implementation Notes:</p>
-      <ul class="text-blue-700 text-sm space-y-1">
-        <li>Use {% verbatim %}{% csrf_token %}{% endverbatim %} inside the form tag</li>
-        <li>Handle file upload in Django view with request.FILES</li>
-        <li>Validate user authentication with @login_required decorator</li>
-        <li>Store uploaded files in MEDIA_ROOT directory</li>
-      </ul>
-    </div>
   </div>
 </div>
 {% endblock %}

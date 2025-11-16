@@ -1,232 +1,76 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Home • Refero{% endblock %}
+{% block title %}Refero • Home{% endblock %}
 
 {% block content %}
-<div class="bg-gray-50 min-h-screen py-8">
-  <div class="max-w-7xl mx-auto px-4">
-    <!-- CollegeFilter (Bootstrap Carousel) -->
-    <div class="bg-white border-b border-gray-200 py-8">
-      <div class="max-w-7xl mx-auto px-4">
-        <div id="collegeCarousel" class="carousel slide" data-bs-ride="carousel">
-          <div class="carousel-indicators" style="bottom:-24px;">
-            <button type="button" data-bs-target="#collegeCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="College of Science"></button>
-            <button type="button" data-bs-target="#collegeCarousel" data-bs-slide-to="1" aria-label="College of Engineering"></button>
-            <button type="button" data-bs-target="#collegeCarousel" data-bs-slide-to="2" aria-label="College of Arts and Letters"></button>
-            <button type="button" data-bs-target="#collegeCarousel" data-bs-slide-to="3" aria-label="College of Business"></button>
-            <button type="button" data-bs-target="#collegeCarousel" data-bs-slide-to="4" aria-label="College of Agriculture"></button>
-            <button type="button" data-bs-target="#collegeCarousel" data-bs-slide-to="5" aria-label="College of Education"></button>
-          </div>
-
-          <div class="carousel-inner text-center">
-            <div class="carousel-item active">
-              <div class="d-flex flex-column align-items-center">
-                <div class="w-32 h-32 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg shadow-lg d-flex align-items-center justify-content-center">
-                  <span class="text-white text-3xl">CS</span>
-                </div>
-                <h2 class="text-gray-900 mt-3">College of Science</h2>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="d-flex flex-column align-items-center">
-                <div class="w-32 h-32 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg shadow-lg d-flex align-items-center justify-content-center">
-                  <span class="text-white text-3xl">CE</span>
-                </div>
-                <h2 class="text-gray-900 mt-3">College of Engineering</h2>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="d-flex flex-column align-items-center">
-                <div class="w-32 h-32 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg shadow-lg d-flex align-items-center justify-content-center">
-                  <span class="text-white text-3xl">CAL</span>
-                </div>
-                <h2 class="text-gray-900 mt-3">College of Arts and Letters</h2>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="d-flex flex-column align-items-center">
-                <div class="w-32 h-32 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg shadow-lg d-flex align-items-center justify-content-center">
-                  <span class="text-white text-3xl">CB</span>
-                </div>
-                <h2 class="text-gray-900 mt-3">College of Business</h2>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="d-flex flex-column align-items-center">
-                <div class="w-32 h-32 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg shadow-lg d-flex align-items-center justify-content-center">
-                  <span class="text-white text-3xl">CA</span>
-                </div>
-                <h2 class="text-gray-900 mt-3">College of Agriculture</h2>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="d-flex flex-column align-items-center">
-                <div class="w-32 h-32 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg shadow-lg d-flex align-items-center justify-content-center">
-                  <span class="text-white text-3xl">CED</span>
-                </div>
-                <h2 class="text-gray-900 mt-3">College of Education</h2>
-              </div>
-            </div>
-          </div>
-
-          <button class="carousel-control-prev" type="button" data-bs-target="#collegeCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#collegeCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
-        </div>
+<div class="space-y-10">
+  <header class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-3xl p-10 shadow-lg">
+    <h1 class="text-4xl font-semibold">Refero Thesis Library</h1>
+    <p class="text-lg text-blue-100 mt-2">Discover, upload, and promote PALSU theses spanning every college.</p>
+    <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-blue-50">
+      <div>
+        <p class="text-xs uppercase tracking-wide">Theses</p>
+        <p class="text-2xl font-bold">{{ stats.thesis_count }}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wide">Colleges</p>
+        <p class="text-2xl font-bold">{{ stats.college_count }}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wide">Programs</p>
+        <p class="text-2xl font-bold">{{ stats.program_count }}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wide">Tags</p>
+        <p class="text-2xl font-bold">{{ stats.tag_count }}</p>
       </div>
     </div>
+  </header>
 
-    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-      <div class="filter-grid">
-        <div class="relative">
-          <label class="block text-gray-700 mb-2">Search</label>
-          <div class="search-wrap">
-            <span class="search-icon">🔎</span>
-            <input type="text" placeholder="Search by title, author, or tag..." class="input" />
-          </div>
+  <section>
+    <h2 class="text-xl font-semibold mb-4 text-gray-800">Filter by Program</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <a href="{% url 'home' %}"
+         class="flex flex-col items-center justify-center p-6 border rounded-2xl bg-white shadow-sm transition hover:shadow-lg {% if not active_program_name %}border-blue-600 ring-2 ring-blue-600{% else %}border-gray-200 hover:border-gray-300{% endif %}">
+        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-gray-100 text-gray-500">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a8 8 0 11-16 0 8 8 0 0116 0z" /></svg>
         </div>
-        <div>
-          <label class="block text-gray-700 mb-2">Sort by</label>
-          <select class="select">
-            <option value="date">Sort by Date</option>
-            <option value="score">Sort by Evaluation Score</option>
-            <option value="ai">Sort by AI Assessment</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-gray-700 mb-2">College</label>
-          <select class="select">
-            <option>All Colleges</option>
-            <option>College of Science</option>
-            <option>College of Engineering</option>
-            <option>College of Arts and Letters</option>
-            <option>College of Business</option>
-          </select>
-        </div>
-      </div>
-      <p class="text-gray-600 mt-4">Showing 3 theses</p>
-    </div>
+        <span class="mt-3 font-medium text-gray-700">All Programs</span>
+      </a>
 
-    <div class="hidden md:block bg-white rounded-lg shadow-sm overflow-hidden">
-      <div class="overflow-x-auto">
-        <table class="w-full">
-          <thead class="bg-gray-50 border-b border-gray-200">
-            <tr>
-              <th class="cell">Title</th>
-              <th class="cell">Authors</th>
-              <th class="cell">Date</th>
-              <th class="cell">Program</th>
-              <th class="cell">Score</th>
-              <th class="cell">Tags</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-200">
-            <tr class="row-hover">
-              <td class="cell">
-                <div class="flex items-start space-x-2">
-                  <img src="https://placehold.co/20x20/2563eb/ffffff" class="icon" alt="" />
-                  <span class="text-gray-900">Machine Learning Applications in Agricultural Pest Detection</span>
-                </div>
-              </td>
-              <td class="cell"><span class="muted">Juan Dela Cruz, Maria Santos</span></td>
-              <td class="cell"><span class="muted">10/15/2024</span></td>
-              <td class="cell"><span class="muted">MS Computer Science</span></td>
-              <td class="cell">
-                <div class="flex items-center space-x-1"><span class="star">★</span><span class="text-gray-900">4.8</span></div>
-              </td>
-              <td class="cell">
-                <div class="tags">
-                  <span class="tag">AI</span>
-                  <span class="tag">Machine Learning</span>
-                  <span class="tag">Agriculture</span>
-                </div>
-              </td>
-            </tr>
-            <tr class="row-hover">
-              <td class="cell">
-                <div class="flex items-start space-x-2">
-                  <img src="https://placehold.co/20x20/2563eb/ffffff" class="icon" alt="" />
-                  <span class="text-gray-900">Natural Language Processing for Philippine Languages</span>
-                </div>
-              </td>
-              <td class="cell"><span class="muted">Isabel Cruz, Ramon Santos</span></td>
-              <td class="cell"><span class="muted">08/30/2024</span></td>
-              <td class="cell"><span class="muted">MS Computer Science</span></td>
-              <td class="cell">
-                <div class="flex items-center space-x-1"><span class="star">★</span><span class="text-gray-900">4.7</span></div>
-              </td>
-              <td class="cell">
-                <div class="tags">
-                  <span class="tag">NLP</span>
-                  <span class="tag">AI</span>
-                  <span class="tag">Linguistics</span>
-                </div>
-              </td>
-            </tr>
-            <tr class="row-hover">
-              <td class="cell">
-                <div class="flex items-start space-x-2">
-                  <img src="https://placehold.co/20x20/2563eb/ffffff" class="icon" alt="" />
-                  <span class="text-gray-900">Structural Analysis of Bamboo Composite Materials</span>
-                </div>
-              </td>
-              <td class="cell"><span class="muted">Carlos Gomez</span></td>
-              <td class="cell"><span class="muted">10/01/2024</span></td>
-              <td class="cell"><span class="muted">MS Civil Engineering</span></td>
-              <td class="cell">
-                <div class="flex items-center space-x-1"><span class="star">★</span><span class="text-gray-900">4.6</span></div>
-              </td>
-              <td class="cell">
-                <div class="tags">
-                  <span class="tag">Engineering</span>
-                  <span class="tag">Materials Science</span>
-                  <span class="tag">Sustainability</span>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      {% for program in filterable_programs %}
+        <a href="{% url 'home' %}?program={{ program.name }}"
+           class="flex flex-col items-center justify-center p-6 border rounded-2xl bg-white shadow-sm transition hover:shadow-lg {% if active_program_name == program.name %}border-blue-600 ring-2 ring-blue-600{% else %}border-gray-200 hover:border-gray-300{% endif %}">
+          <img src="{% static program.logo_url %}" alt="{{ program.name }}" class="h-16 w-16 rounded-full object-cover">
+          <span class="mt-3 font-medium text-gray-700 text-center">{{ program.name }}</span>
+        </a>
+      {% endfor %}
     </div>
+  </section>
 
-    <div class="md:hidden space-y-4">
-      <div class="card">
-        <div class="card-title">
-          <img src="https://placehold.co/20x20/2563eb/ffffff" class="icon" alt="" />
-          <h3 class="text-gray-900">Machine Learning Applications in Agricultural Pest Detection</h3>
-        </div>
-        <div class="space-y-2">
-          <div class="muted">Juan Dela Cruz, Maria Santos</div>
-          <div class="muted">10/15/2024</div>
-          <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-1"><span class="star">★</span><span class="text-gray-900">4.8</span></div>
-            <div class="tags"><span class="tag">AI</span><span class="tag">Machine Learning</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title">
-          <img src="https://placehold.co/20x20/2563eb/ffffff" class="icon" alt="" />
-          <h3 class="text-gray-900">Natural Language Processing for Philippine Languages</h3>
-        </div>
-        <div class="space-y-2">
-          <div class="muted">Isabel Cruz, Ramon Santos</div>
-          <div class="muted">08/30/2024</div>
-          <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-1"><span class="star">★</span><span class="text-gray-900">4.7</span></div>
-            <div class="tags"><span class="tag">NLP</span><span class="tag">AI</span></div>
-          </div>
-        </div>
-      </div>
+  <section class="mt-10">
+    <div class="flex items-center justify-between">
+      <h2 class="text-2xl font-semibold">Featured Theses</h2>
+      <a href="{% url 'theses' %}" class="text-blue-600 hover:underline text-sm">See all</a>
     </div>
-  </div>
+    <div class="mt-6 grid gap-6 md:grid-cols-2">
+      {% for thesis in featured_theses %}
+        <article class="border border-gray-200 rounded-2xl p-6 shadow-sm bg-white">
+          <p class="text-sm text-gray-500">{{ thesis.college.college_name }} • {{ thesis.program.prog_name }}</p>
+          <a href="{% url 'thesis_detail' thesis.pk %}" class="block mt-2">
+            <h3 class="text-xl font-semibold hover:text-blue-600 transition">{{ thesis.title }}</h3>
+          </a>
+          <p class="text-sm text-gray-700 mt-3 leading-relaxed">{{ thesis.abstract|truncatechars:160 }}</p>
+          <div class="mt-4 text-sm text-gray-500">
+            <p>Authors: {{ thesis.authors }}</p>
+            <p>Year: {{ thesis.year_submitted }}</p>
+          </div>
+        </article>
+      {% empty %}
+        <div class="text-gray-500">No theses have been added yet.</div>
+      {% endfor %}
+    </div>
+  </section>
 </div>
 {% endblock %}
-
-
