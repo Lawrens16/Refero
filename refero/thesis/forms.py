@@ -13,6 +13,13 @@ class ThesisUploadForm(ModelForm):
         required=False,
         label="Select Relevant Research Areas/Tags (e.g., AI, Web Development)"
     )
+
+    pdf_file = forms.FileField(
+        label="Upload Thesis PDF",
+        widget=forms.FileInput(attrs={'accept': '.pdf'}),
+        required=False,
+        help_text="Upload the final thesis manuscript in PDF format."
+    )
     
     # This field MUST be defined explicitly to enforce max_value validation 
     # using Python's datetime library (preventing future years).
@@ -35,7 +42,8 @@ class ThesisUploadForm(ModelForm):
             'year_submitted', 
             'college', 
             'program', 
-            'tags'
+            'tags',
+            'pdf_file'
         ]
         
         # We use the 'widgets' property to customize the appearance of the fields
@@ -46,3 +54,9 @@ class ThesisUploadForm(ModelForm):
             'authors': forms.TextInput(attrs={'placeholder': 'e.g., John Doe, Jane Smith (Comma-separated)'}),
             'adviser': forms.TextInput(attrs={'placeholder': 'e.g., Prof. Alex Smith'}),
         }
+
+    def clean_pdf_file(self):
+        file = self.cleaned_data.get('pdf_file')
+        if not file and not getattr(self.instance, 'pk', None):
+            raise forms.ValidationError('Please upload a PDF file for this thesis.')
+        return file

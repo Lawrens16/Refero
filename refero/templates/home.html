@@ -37,7 +37,9 @@
       {% for thesis in featured_theses %}
         <article class="border border-gray-200 rounded-2xl p-6 shadow-sm bg-white">
           <p class="text-sm text-gray-500">{{ thesis.college.college_name }} • {{ thesis.program.prog_name }}</p>
-          <h3 class="text-xl font-semibold mt-2">{{ thesis.title }}</h3>
+          <a href="{% url 'thesis_detail' thesis.pk %}" class="block mt-2">
+            <h3 class="text-xl font-semibold hover:text-blue-600 transition">{{ thesis.title }}</h3>
+          </a>
           <p class="text-sm text-gray-700 mt-3 leading-relaxed">{{ thesis.abstract|truncatechars:160 }}</p>
           <div class="mt-4 text-sm text-gray-500">
             <p>Authors: {{ thesis.authors }}</p>

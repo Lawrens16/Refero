@@ -16,7 +16,9 @@
     {% for thesis in page_obj %}
       <article class="p-5 rounded-2xl border border-gray-200 bg-white shadow-sm">
         <p class="text-xs uppercase text-gray-400 tracking-wide">{{ thesis.college.college_name }} • {{ thesis.program.prog_name }}</p>
-        <h2 class="text-xl font-semibold mt-2">{{ thesis.title }}</h2>
+        <a href="{% url 'thesis_detail' thesis.pk %}" class="block mt-2">
+          <h2 class="text-xl font-semibold hover:text-blue-600 transition">{{ thesis.title }}</h2>
+        </a>
         <p class="text-sm text-gray-500 mt-1">{{ thesis.authors }}</p>
         <p class="text-sm text-gray-700 mt-3">{{ thesis.abstract|truncatechars:200 }}</p>
         <div class="mt-4 text-xs text-gray-600">

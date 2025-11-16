@@ -16,11 +16,20 @@
     {% for thesis in uploads %}
       <article class="p-5 rounded-2xl border border-gray-200 bg-white shadow-sm">
         <p class="text-xs uppercase tracking-wide text-gray-400">{{ thesis.college.college_name }} • {{ thesis.program.prog_name }}</p>
-        <h2 class="text-xl font-semibold mt-1">{{ thesis.title }}</h2>
+        <a href="{% url 'thesis_detail' thesis.pk %}" class="block mt-1">
+          <h2 class="text-xl font-semibold hover:text-blue-600 transition">{{ thesis.title }}</h2>
+        </a>
         <p class="text-sm text-gray-500">{{ thesis.authors }}</p>
         <p class="text-sm text-gray-700 mt-2">{{ thesis.abstract|truncatechars:200 }}</p>
         <div class="mt-3 text-xs text-gray-500">
           <span>Uploaded {{ thesis.date_added|date:"F j, Y" }}</span>
+        </div>
+        <div class="mt-4 border-t pt-4 flex flex-wrap items-center gap-4">
+          {% if thesis.pdf_file %}
+            <a href="{{ thesis.pdf_file.url }}" class="text-sm font-medium text-gray-600 hover:text-gray-800" download>Download PDF</a>
+          {% endif %}
+          <a href="{% url 'thesis_edit' thesis.pk %}" class="text-sm font-medium text-blue-600 hover:text-blue-500">Edit</a>
+          <a href="{% url 'thesis_delete' thesis.pk %}" class="text-sm font-medium text-red-600 hover:text-red-500">Delete</a>
         </div>
       </article>
     {% empty %}

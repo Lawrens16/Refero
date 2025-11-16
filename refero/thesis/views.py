@@ -4,7 +4,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.shortcuts import redirect, render
+from django.http import HttpResponseForbidden
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
@@ -75,7 +76,7 @@ def frontend_theses(request):
 @login_required
 def frontend_upload(request):
     if request.method == 'POST':
-        form = ThesisUploadForm(request.POST)
+        form = ThesisUploadForm(request.POST, request.FILES)
         if form.is_valid():
             thesis = form.save(commit=False)
             thesis.uploaded_by = request.user
@@ -100,3 +101,51 @@ def frontend_profile(request):
         'stats': _get_site_stats(),
     }
     return render(request, 'profile.html', context)
+
+
+def thesis_detail(request, pk):
+    thesis = get_object_or_404(_build_thesis_queryset(), pk=pk)
+    context = {
+        'thesis': thesis,
+        'stats': _get_site_stats(),
+    }
+    return render(request, 'thesis_detail.html', context)
+
+
+@login_required
+def thesis_edit(request, pk):
+    thesis = get_object_or_404(Thesis, pk=pk)
+    if thesis.uploaded_by != request.user:
+        return HttpResponseForbidden("You do not have permission to edit this thesis.")
+
+    if request.method == 'POST':
+        form = ThesisUploadForm(request.POST, request.FILES, instance=thesis)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Thesis updated successfully.')
+            return redirect('profile')
+    else:
+        form = ThesisUploadForm(instance=thesis)
+
+    return render(request, 'thesis_edit.html', {
+        'form': form,
+        'thesis': thesis,
+        'stats': _get_site_stats(),
+    })
+
+
+@login_required
+def thesis_delete(request, pk):
+    thesis = get_object_or_404(Thesis, pk=pk)
+    if thesis.uploaded_by != request.user:
+        return HttpResponseForbidden("You do not have permission to delete this thesis.")
+
+    if request.method == 'POST':
+        thesis.delete()
+        messages.success(request, 'Thesis deleted successfully.')
+        return redirect('profile')
+
+    return render(request, 'thesis_confirm_delete.html', {
+        'thesis': thesis,
+        'stats': _get_site_stats(),
+    })

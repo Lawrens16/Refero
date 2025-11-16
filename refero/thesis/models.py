@@ -38,6 +38,7 @@ class Thesis(BaseModel):
     program = models.ForeignKey('Program', on_delete=models.CASCADE, related_name='theses')
     panel_score = models.FloatField(blank=True, null=True)
     tags = models.ManyToManyField('Tag', blank=True, related_name='theses')
+    pdf_file = models.FileField(upload_to='theses_pdf/', verbose_name="Thesis PDF File", blank=True)
 
     def __str__(self):
         return self.title
