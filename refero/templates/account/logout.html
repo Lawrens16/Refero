@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Sign out • Refero{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-white rounded-3xl shadow-sm p-8 text-center">
+  <h1 class="text-3xl font-semibold text-gray-900 mb-3">Ready to sign out?</h1>
+  <p class="text-gray-500 mb-6">You can always come back to continue exploring the thesis library.</p>
+
+  <form method="post" action="{% url 'account_logout' %}" class="space-y-4">
+    {% csrf_token %}
+    {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+    {% endif %}
+    <button type="submit" class="w-full btn btn-primary">Sign out</button>
+    <a href="{% url 'home' %}" class="block text-blue-600">Cancel</a>
+  </form>
+</div>
+{% endblock %}
