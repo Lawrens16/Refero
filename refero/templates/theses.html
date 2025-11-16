@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Refero • Theses{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+  <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+    <h1 class="text-3xl font-semibold">All Theses</h1>
+    <form method="get" class="flex flex-col gap-2 sm:flex-row">
+      <input name="q" value="{{ query }}" type="search" placeholder="Search titles, authors, tags" class="rounded-full border border-gray-300 px-4 py-2 text-sm focus:border-blue-500 focus:outline-none">
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+  </div>
+
+  <div class="grid gap-6 md:grid-cols-2">
+    {% for thesis in page_obj %}
+      <article class="p-5 rounded-2xl border border-gray-200 bg-white shadow-sm">
+        <p class="text-xs uppercase text-gray-400 tracking-wide">{{ thesis.college.college_name }} • {{ thesis.program.prog_name }}</p>
+        <h2 class="text-xl font-semibold mt-2">{{ thesis.title }}</h2>
+        <p class="text-sm text-gray-500 mt-1">{{ thesis.authors }}</p>
+        <p class="text-sm text-gray-700 mt-3">{{ thesis.abstract|truncatechars:200 }}</p>
+        <div class="mt-4 text-xs text-gray-600">
+          {% for tag in thesis.tags.all %}
+            <span class="inline-flex items-center rounded-full px-3 py-1 bg-gray-100 text-gray-500 mr-2">{{ tag.name }}</span>
+          {% empty %}
+            <span class="text-gray-400">No tags</span>
+          {% endfor %}
+        </div>
+      </article>
+    {% empty %}
+      <div class="text-gray-500">No theses match your search yet.</div>
+    {% endfor %}
+  </div>
+
+  <div class="flex justify-center">
+    <div class="inline-flex rounded-lg border border-gray-200 bg-white shadow-sm">
+      {% if page_obj.has_previous %}
+        <a href="?q={{ query }}&page={{ page_obj.previous_page_number }}" class="px-4 py-2">Previous</a>
+      {% else %}
+        <span class="px-4 py-2 text-gray-400">Previous</span>
+      {% endif %}
+      <span class="px-4 py-2 border-x border-gray-200">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+        <a href="?q={{ query }}&page={{ page_obj.next_page_number }}" class="px-4 py-2">Next</a>
+      {% else %}
+        <span class="px-4 py-2 text-gray-400">Next</span>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

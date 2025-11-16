@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Refero • Home{% endblock %}
+
+{% block content %}
+<div class="space-y-10">
+  <header class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-3xl p-10 shadow-lg">
+    <h1 class="text-4xl font-semibold">Refero Thesis Library</h1>
+    <p class="text-lg text-blue-100 mt-2">Discover, upload, and promote UP Diliman theses spanning every college.</p>
+    <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-blue-50">
+      <div>
+        <p class="text-xs uppercase tracking-wide">Theses</p>
+        <p class="text-2xl font-bold">{{ stats.thesis_count }}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wide">Colleges</p>
+        <p class="text-2xl font-bold">{{ stats.college_count }}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wide">Programs</p>
+        <p class="text-2xl font-bold">{{ stats.program_count }}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wide">Tags</p>
+        <p class="text-2xl font-bold">{{ stats.tag_count }}</p>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="flex items-center justify-between">
+      <h2 class="text-2xl font-semibold">Featured Theses</h2>
+      <a href="{% url 'theses' %}" class="text-blue-600 hover:underline text-sm">See all</a>
+    </div>
+    <div class="mt-6 grid gap-6 md:grid-cols-2">
+      {% for thesis in featured_theses %}
+        <article class="border border-gray-200 rounded-2xl p-6 shadow-sm bg-white">
+          <p class="text-sm text-gray-500">{{ thesis.college.college_name }} • {{ thesis.program.prog_name }}</p>
+          <h3 class="text-xl font-semibold mt-2">{{ thesis.title }}</h3>
+          <p class="text-sm text-gray-700 mt-3 leading-relaxed">{{ thesis.abstract|truncatechars:160 }}</p>
+          <div class="mt-4 text-sm text-gray-500">
+            <p>Authors: {{ thesis.authors }}</p>
+            <p>Year: {{ thesis.year_submitted }}</p>
+          </div>
+        </article>
+      {% empty %}
+        <div class="text-gray-500">No theses have been added yet.</div>
+      {% endfor %}
+    </div>
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Refero{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-900" style="font-family: 'Inter', sans-serif;">
+    <div class="bg-white border-b border-gray-100">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <a href="{% url 'home' %}" class="flex items-center space-x-3">
+                <img src="{% static 'images/SITE-LOGO.jpg' %}" alt="Refero" class="h-10 w-10 rounded-full object-cover">
+                <div>
+                    <p class="font-semibold">Refero</p>
+                    <p class="text-sm text-gray-500">Academic Thesis Hub</p>
+                </div>
+            </a>
+            <nav class="flex items-center space-x-6 text-sm font-medium">
+                <a href="{% url 'home' %}" class="hover:text-blue-600 transition">Home</a>
+                <a href="{% url 'theses' %}" class="hover:text-blue-600 transition">Theses</a>
+                <a href="{% url 'upload' %}" class="hover:text-blue-600 transition">Upload</a>
+                {% if request.user.is_authenticated %}
+                    <a href="{% url 'profile' %}" class="hover:text-blue-600 transition">Profile</a>
+                    <form action="{% url 'account_logout' %}" method="post" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="text-red-600 hover:text-red-500 transition">Logout</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'account_login' %}" class="text-blue-600 hover:text-blue-500 transition">Sign in</a>
+                {% endif %}
+            </nav>
+        </div>
+    </div>
+
+    {% if messages %}
+        <div class="max-w-3xl mx-auto mt-6 px-4">
+            {% for message in messages %}
+                <div class="rounded-md p-4 mb-2 text-sm {% if message.tags == 'success' %}bg-green-50 text-green-700 border border-green-200{% else %}bg-blue-50 text-blue-700 border border-blue-200{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="text-center text-sm text-gray-500 py-6">
+        &copy; {% now "Y" %} Refero. Built for smarter research discovery.
+    </footer>
+</body>
+</html>
