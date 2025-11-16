@@ -43,7 +43,8 @@ class ThesisUploadForm(ModelForm):
             'college', 
             'program', 
             'tags',
-            'pdf_file'
+            'pdf_file',
+            'panel_score'
         ]
         
         # We use the 'widgets' property to customize the appearance of the fields
@@ -53,6 +54,7 @@ class ThesisUploadForm(ModelForm):
             'abstract': forms.Textarea(attrs={'rows': 5, 'placeholder': 'Provide a concise abstract (summary) of the research.'}),
             'authors': forms.TextInput(attrs={'placeholder': 'e.g., John Doe, Jane Smith (Comma-separated)'}),
             'adviser': forms.TextInput(attrs={'placeholder': 'e.g., Prof. Alex Smith'}),
+            'panel_score': forms.NumberInput(attrs={'placeholder': 'e.g., 92.5 (Optional)'}),
         }
 
     def clean_pdf_file(self):

@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Q, F, Sum, Avg
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -45,10 +45,12 @@ def frontend_home(request):
         {
             'name': 'BS Information Technology',
             'logo_url': 'images/SITE-LOGO.jpg',
+            'id': 'it',
         },
         {
             'name': 'BS Computer Science',
             'logo_url': 'images/ACS-LOGO.png',
+            'id': 'cs',
         },
     ]
 
@@ -84,9 +86,14 @@ def frontend_theses(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    user_uploads = []
+    if request.user.is_authenticated and not query:
+        user_uploads = _build_thesis_queryset().filter(uploaded_by=request.user).order_by('-date_added')
+
     context = {
         'page_obj': page_obj,
         'query': query,
+        'user_uploads': user_uploads,
         'stats': _get_site_stats(),
     }
     return render(request, 'theses.html', context)
@@ -115,15 +122,23 @@ def frontend_upload(request):
 @login_required
 def frontend_profile(request):
     uploads = _build_thesis_queryset().filter(uploaded_by=request.user).order_by('-date_added')
+    total_views_data = uploads.aggregate(total_views=Sum('view_count'))
+    total_views = total_views_data['total_views'] or 0
+    average_score_data = uploads.filter(panel_score__isnull=False).aggregate(average_score=Avg('panel_score'))
+    average_score = average_score_data['average_score']
     context = {
         'uploads': uploads,
         'stats': _get_site_stats(),
+        'total_views': total_views,
+        'average_score': average_score,
     }
     return render(request, 'profile.html', context)
 
 
 def thesis_detail(request, pk):
     thesis = get_object_or_404(_build_thesis_queryset(), pk=pk)
+    Thesis.objects.filter(pk=pk).update(view_count=F('view_count') + 1)
+    thesis.refresh_from_db()
     context = {
         'thesis': thesis,
         'stats': _get_site_stats(),

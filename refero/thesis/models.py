@@ -39,6 +39,7 @@ class Thesis(BaseModel):
     panel_score = models.FloatField(blank=True, null=True)
     tags = models.ManyToManyField('Tag', blank=True, related_name='theses')
     pdf_file = models.FileField(upload_to='theses_pdf/', verbose_name="Thesis PDF File", blank=True)
+    view_count = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.title
