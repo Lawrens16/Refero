@@ -41,10 +41,29 @@ def _get_site_stats():
 
 
 def frontend_home(request):
-    featured_theses = _build_thesis_queryset().order_by('-date_added')[:6]
+    filterable_programs = [
+        {
+            'name': 'BS Information Technology',
+            'logo_url': 'images/SITE-LOGO.jpg',
+        },
+        {
+            'name': 'BS Computer Science',
+            'logo_url': 'images/ACS-LOGO.png',
+        },
+    ]
+
+    active_program_name = request.GET.get('program') or None
+
+    featured_theses = _build_thesis_queryset().order_by('-date_added')
+    if active_program_name:
+        featured_theses = featured_theses.filter(program__prog_name=active_program_name)
+
+    featured_theses = featured_theses[:6]
     context = {
         'stats': _get_site_stats(),
         'featured_theses': featured_theses,
+        'filterable_programs': filterable_programs,
+        'active_program_name': active_program_name,
     }
     return render(request, 'home.html', context)
 
