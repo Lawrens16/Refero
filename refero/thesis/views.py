@@ -18,7 +18,7 @@ class SignUpView(CreateView):
     #template_name = "account/register.html"  # your template path
     success_url = reverse_lazy('account_login')  
 
-class HomePageView(ListView):
+class HomePageView(LoginRequiredMixin, ListView):
     model = Thesis
     context_object_name = 'base'
     template_name = "base.html"
@@ -40,6 +40,7 @@ def _get_site_stats():
     }
 
 
+@login_required
 def frontend_home(request):
     filterable_programs = [
         {
@@ -70,6 +71,7 @@ def frontend_home(request):
     return render(request, 'home.html', context)
 
 
+@login_required
 def frontend_theses(request):
     query = request.GET.get('q', '').strip()
     base_qs = _build_thesis_queryset().order_by('-date_added')
@@ -135,6 +137,7 @@ def frontend_profile(request):
     return render(request, 'profile.html', context)
 
 
+@login_required
 def thesis_detail(request, pk):
     thesis = get_object_or_404(_build_thesis_queryset(), pk=pk)
     Thesis.objects.filter(pk=pk).update(view_count=F('view_count') + 1)
