@@ -11,8 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 text-gray-900" style="font-family: 'Inter', sans-serif;">
-    <div class="bg-white border-b border-gray-100">
+<body class="bg-gray-50 text-gray-900 pt-24" style="font-family: 'Inter', sans-serif;">
+    <div class="bg-white border-b border-gray-100 fixed top-0 w-full z-50">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
             <a href="{% url 'home' %}" class="flex items-center space-x-3">
                 <img src="{% static 'images/Refero.svg' %}" alt="Refero Logo" class="h-10 w-auto">
@@ -22,17 +22,25 @@
                 </div>
             </a>
             <nav class="flex items-center space-x-6 text-sm font-medium">
-                <a href="{% url 'home' %}" class="hover:text-blue-600 transition">Home</a>
-                <a href="{% url 'theses' %}" class="hover:text-blue-600 transition">Theses</a>
-                <a href="{% url 'upload' %}" class="hover:text-blue-600 transition">Upload</a>
+                {% url 'home' as home_url %}
+                <a href="{{ home_url }}" class="transition {% if request.path == home_url %}text-blue-600 font-bold{% else %}hover:text-blue-600{% endif %}">Home</a>
+                
+                {% url 'theses' as theses_url %}
+                <a href="{{ theses_url }}" class="transition {% if request.path == theses_url %}text-blue-600 font-bold{% else %}hover:text-blue-600{% endif %}">Theses</a>
+                
+                {% url 'upload' as upload_url %}
+                <a href="{{ upload_url }}" class="transition {% if request.path == upload_url %}text-blue-600 font-bold{% else %}hover:text-blue-600{% endif %}">Upload</a>
+                
                 {% if request.user.is_authenticated %}
-                    <a href="{% url 'profile' %}" class="hover:text-blue-600 transition">Profile</a>
+                    {% url 'profile' as profile_url %}
+                    <a href="{{ profile_url }}" class="transition {% if request.path == profile_url %}text-blue-600 font-bold{% else %}hover:text-blue-600{% endif %}">Profile</a>
                     <form action="{% url 'account_logout' %}" method="post" class="inline">
                         {% csrf_token %}
                         <button type="submit" class="text-red-600 hover:text-red-500 transition">Logout</button>
                     </form>
                 {% else %}
-                    <a href="{% url 'account_login' %}" class="text-blue-600 hover:text-blue-500 transition">Sign in</a>
+                    {% url 'account_login' as login_url %}
+                    <a href="{{ login_url }}" class="transition {% if request.path == login_url %}text-blue-600 font-bold{% else %}text-blue-600 hover:text-blue-500{% endif %}">Sign in</a>
                 {% endif %}
             </nav>
         </div>
