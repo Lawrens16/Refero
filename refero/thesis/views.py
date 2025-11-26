@@ -115,7 +115,7 @@ def frontend_upload(request):
     else:
         form = ThesisUploadForm()
 
-    return render(request, 'upload.html', {
+    return render(request, 'thesis_upload.html', {
         'form': form,
         'stats': _get_site_stats(),
     })

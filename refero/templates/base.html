@@ -28,7 +28,7 @@
                 {% url 'theses' as theses_url %}
                 <a href="{{ theses_url }}" class="transition {% if request.path == theses_url %}text-blue-600 font-bold{% else %}hover:text-blue-600{% endif %}">Theses</a>
                 
-                {% url 'upload' as upload_url %}
+                {% url 'thesis_upload' as upload_url %}
                 <a href="{{ upload_url }}" class="transition {% if request.path == upload_url %}text-blue-600 font-bold{% else %}hover:text-blue-600{% endif %}">Upload</a>
                 
                 {% if request.user.is_authenticated %}
