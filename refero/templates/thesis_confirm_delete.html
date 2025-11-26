@@ -13,8 +13,10 @@
 
   <form method="post" class="mt-6 space-y-4">
     {% csrf_token %}
-    <div class="flex justify-end space-x-4">
-      <a href="{% url 'profile' %}" class="btn btn-muted">Cancel</a>
+    <div class="flex justify-end space-x-4 items-center">
+      
+      <a href="{% url 'theses' %}" class="btn btn-muted">Cancel</a>
+      
       <button type="submit" class="inline-flex items-center justify-center rounded-xl bg-red-600 px-4 py-2 text-white font-medium hover:bg-red-500">Yes, delete it</button>
     </div>
   </form>

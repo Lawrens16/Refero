@@ -24,7 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.frontend_home, name='home'),
     path('theses/', views.frontend_theses, name='theses'),
-    path('upload-thesis/', views.frontend_upload, name='upload'),
+    path('upload-thesis/', views.frontend_upload, name='thesis_upload'),
     path('profile/', views.frontend_profile, name='profile'),
     path('thesis/<int:pk>/', views.thesis_detail, name='thesis_detail'),
     path('thesis/<int:pk>/edit/', views.thesis_edit, name='thesis_edit'),
