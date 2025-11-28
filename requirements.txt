@@ -39,5 +39,5 @@ sqlparse==0.5.3
 tzdata==2025.2
 django-pwa
 urllib3==2.5.0
-python-dotenv=1.2.1
+python-dotenv==1.2.1
 django-anymail[sendgrid]==13.1
