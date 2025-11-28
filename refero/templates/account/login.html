@@ -31,6 +31,10 @@
       <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
     {% endif %}
 
+    <div class="flex justify-center">
+      <a href="{% url 'password_reset' %}" class="text-sm font-medium text-blue-600 hover:text-blue-500">Forgot password?</a>
+    </div>
+
     <button type="submit" class="w-full btn btn-primary">Sign in</button>
   </form>
 
