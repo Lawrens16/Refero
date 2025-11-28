@@ -4,13 +4,13 @@ Refero is a web-based Thesis Reference Management System designed specifically f
 
 ## Key Features
 
-*   **Reference Management:** Organize thesis sources, journals, and articles in a centralized dashboard.
-*   **User Accounts:** Secure signup and login functionality.
-*   **Social Authentication:** Sign in easily using Google or Facebook accounts (powered by `django-allauth`).
-*   **Citation Generation:** Automatically generate citations for stored references.
-*   **Progressive Web App (PWA):** Installable on mobile and desktop devices for offline access.
-*   **REST API:** Backend API support for potential mobile or external integrations.
-*   **Email Notifications:** Integrated email services via SendGrid for account verification and updates.
+* **Thesis Repository:** Allows users to upload and store thesis documents (e.g., PDF format), serving as a central reference hub for ideas and sources.
+* **Student-Centric Design:** Specifically built to assist 3rd and 4th-year students in managing references for their thesis requirements.
+* **Smart Metadata & Tagging:** Displays essential details (Title, Authors, Date, Notes) and supports domain-specific tags such as AI, Machine Learning, Agriculture, and Health.
+* **Secure Ownership:** Enforces strict permission rules—only the original uploader of a thesis has the authority to delete it.
+* **User Authentication:** Secure signup and login functionality for managing personal uploads.
+* **Social Authentication:** Sign in easily using Google or Facebook accounts (powered by `django-allauth`).
+* **Email Notifications:** Integrated email services via SendGrid for account verification and updates.
 
 ## Prerequisites
 
