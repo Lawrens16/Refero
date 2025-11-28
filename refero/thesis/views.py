@@ -13,6 +13,64 @@ from django.views.generic.list import ListView
 from thesis.forms import ThesisUploadForm
 from thesis.models import Thesis, Program, College, Tag
 
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.conf import settings
+import random
+
+def password_reset_request(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        user = User.objects.filter(email=email).first()
+        if user:
+            code = str(random.randint(100000, 999999))
+            request.session['reset_code'] = code
+            request.session['reset_email'] = email
+            
+            send_mail(
+                'Password Reset Verification Code',
+                f'Your verification code is: {code}',
+                settings.DEFAULT_FROM_EMAIL,
+                [email],
+                fail_silently=False,
+            )
+            return redirect('password_reset_verify')
+        else:
+            messages.error(request, "Email not found.")
+    return render(request, 'registration/password_reset_form.html')
+
+def password_reset_verify(request):
+    if request.method == 'POST':
+        code = request.POST.get('code')
+        session_code = request.session.get('reset_code')
+        if code == session_code:
+            request.session['reset_verified'] = True
+            return redirect('password_reset_confirm_custom')
+        else:
+            messages.error(request, "Invalid code.")
+    return render(request, 'registration/password_reset_verify_code.html')
+
+def password_reset_confirm_custom(request):
+    if not request.session.get('reset_verified'):
+        return redirect('password_reset_request')
+    
+    if request.method == 'POST':
+        p1 = request.POST.get('password_1')
+        p2 = request.POST.get('password_2')
+        if p1 == p2:
+            email = request.session.get('reset_email')
+            user = User.objects.get(email=email)
+            user.set_password(p1)
+            user.save()
+            # Clean up session
+            del request.session['reset_code']
+            del request.session['reset_email']
+            del request.session['reset_verified']
+            return redirect('password_reset_complete')
+        else:
+            messages.error(request, "Passwords do not match.")
+    return render(request, 'registration/password_reset_confirm.html')
+
 class SignUpView(CreateView):
     form_class = UserCreationForm
     #template_name = "account/register.html"  # your template path

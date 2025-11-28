@@ -18,6 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from django.contrib.auth import views as auth_views
 from thesis import views 
 
 urlpatterns = [
@@ -29,6 +30,13 @@ urlpatterns = [
     path('thesis/<int:pk>/', views.thesis_detail, name='thesis_detail'),
     path('thesis/<int:pk>/edit/', views.thesis_edit, name='thesis_edit'),
     path('thesis/<int:pk>/delete/', views.thesis_delete, name='thesis_delete'),
+    
+    # Custom Password Reset Views
+    path('accounts/password_reset/', views.password_reset_request, name='password_reset'),
+    path('accounts/password_reset/verify/', views.password_reset_verify, name='password_reset_verify'),
+    path('accounts/password_reset/confirm/', views.password_reset_confirm_custom, name='password_reset_confirm_custom'),
+    path('accounts/password_reset/complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+
     path('accounts/', include('allauth.urls')),
 ]
 
