@@ -100,9 +100,9 @@ python manage.py runserver
 
 ## Tech Stack
 
+*   **Frontend:** Django Templates + Bootstrap 5 (Crispy Forms)
 *   **Backend:** Django 5.2.7
-*   **API:** Django REST Framework
 *   **Database:** SQLite (Development)
 *   **Authentication:** Django Allauth
 *   **Email:** Anymail (SendGrid)
-*   **Frontend:** Django Templates + Bootstrap 5 (Crispy Forms)
+
