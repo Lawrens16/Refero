@@ -12,7 +12,12 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+load_dotenv()
 import socket
+import warnings
+
+warnings.filterwarnings("ignore", message="django-anymail has dropped official support for SendGrid")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'anymail',
     'rest_framework',
     'refero',
     'widget_tweaks',
@@ -172,3 +178,12 @@ ACCOUNT_SIGNUP_FIELDS = [
 "password1*",
 "password2*",
 ]
+
+EMAIL_BACKEND = "anymail.backends.sendgrid.EmailBackend"
+
+ANYMAIL = {
+    "SENDGRID_API_KEY": os.environ.get('SENDGRID_API_KEY'),
+}
+DEFAULT_FROM_EMAIL = 'Refero Team <referopalsu@gmail.com>'
+
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
