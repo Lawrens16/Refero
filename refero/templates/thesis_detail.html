@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}{{ thesis.title }} • Refero{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-2xl shadow-sm p-8 max-w-4xl mx-auto space-y-6">
+  <div>
+    <p class="text-sm text-gray-500">{{ thesis.college.college_name }} • {{ thesis.program.prog_name }}</p>
+    <h1 class="text-3xl font-semibold mt-2 text-gray-900">{{ thesis.title }}</h1>
+    <p class="text-lg text-gray-700 mt-1">{{ thesis.authors }}</p>
+    <p class="text-sm text-gray-500">Submitted {{ thesis.year_submitted }}</p>
+    {% if thesis.adviser %}
+      <p class="text-sm text-gray-500">Adviser: {{ thesis.adviser }}</p>
+    {% endif %}
+  </div>
+
+  <div>
+    <h2 class="text-xl font-semibold text-gray-900">Abstract</h2>
+    <p class="text-gray-700 mt-2 leading-relaxed">{{ thesis.abstract|linebreaks }}</p>
+  </div>
+
+  <div>
+    <h2 class="text-xl font-semibold text-gray-900">Tags</h2>
+    <div class="mt-2 text-sm text-gray-600">
+      {% for tag in thesis.tags.all %}
+        <span class="inline-flex items-center rounded-full px-3 py-1 bg-gray-100 text-gray-500 mr-2 mb-2">{{ tag.name }}</span>
+      {% empty %}
+        <span class="text-gray-400">No tags</span>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="mt-8 border-t pt-6">
+    {% if thesis.pdf_file %}
+      <a href="{{ thesis.pdf_file.url }}" class="btn btn-primary w-full md:w-auto" download>
+        Download Thesis (PDF)
+      </a>
+    {% else %}
+      <p class="text-sm text-gray-500">PDF file not available.</p>
+    {% endif %}
+    <p class="text-xs text-gray-500 mt-2">Uploaded by: {{ thesis.uploaded_by.username }} on {{ thesis.date_added|date:"F j, Y" }}</p>
+  </div>
+</div>
+{% endblock %}
