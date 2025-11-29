@@ -17,6 +17,7 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.conf import settings
 import random
+import requests
 
 def password_reset_request(request):
     if request.method == 'POST':
@@ -82,6 +83,78 @@ class HomePageView(LoginRequiredMixin, ListView):
     template_name = "base.html"
     paginate_by = 3 
 
+
+SS_API_BASE_URL = "https://api.semanticscholar.org/graph/v1"
+SS_RECOMMENDATIONS_URL = "https://api.semanticscholar.org/recommendations/v1/papers/forpaper/"
+
+def get_paper_id(title: str) -> str | None:
+    """Uses the /paper/search endpoint to find a paper's unique ID."""
+    search_url = f"{SS_API_BASE_URL}/paper/search"
+    
+    headers = {
+        'x-api-key': settings.SEMANTIC_SCHOLAR_CONFIG.get("API_KEY"),
+        'Content-Type': 'application/json'
+    }
+    
+    params = {
+        'query': title,
+        'fields': 'paperId',
+        'limit': 1 
+    }
+    
+    try:
+        response = requests.get(search_url, headers=headers, params=params, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        
+        # Check if results exist and return the first paperId
+        if data.get('data') and len(data['data']) > 0:
+            return data['data'][0].get('paperId')
+        
+    except requests.exceptions.RequestException as e:
+        print(f"Error during Semantic Scholar ID lookup for '{title}': {e}")
+        return None
+    except Exception as e:
+        print(f"An unexpected error occurred during ID lookup: {e}")
+        return None
+    return None
+
+def get_thesis_recommendations(thesis_title: str) -> list:
+    """
+    Fetches related paper recommendations using a two-step process: lookup and recommendation.
+    """
+    paper_id = get_paper_id(thesis_title)
+    
+    if not paper_id:
+        print(f"No Semantic Scholar ID found for: {thesis_title}")
+        return []
+
+    recommendations_url = f"{SS_RECOMMENDATIONS_URL}{paper_id}"
+    
+    headers = {
+        'x-api-key': settings.SEMANTIC_SCHOLAR_CONFIG.get("API_KEY"),
+        'Content-Type': 'application/json'
+    }
+
+    params = {
+        'fields': 'title,authors.name,year,abstract',
+        'limit': 5
+    }
+
+    try:
+        response = requests.get(recommendations_url, headers=headers, params=params, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        
+        # The recommendations endpoint returns a list of papers under 'recommendedPapers'
+        return data.get('recommendedPapers', [])
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching recommendations for ID {paper_id}: {e}")
+        return []
+    except Exception as e:
+        print(f"An unexpected error occurred during recommendation fetch: {e}")
+        return []
 
 
 def _build_thesis_queryset():
@@ -200,9 +273,13 @@ def thesis_detail(request, pk):
     thesis = get_object_or_404(_build_thesis_queryset(), pk=pk)
     Thesis.objects.filter(pk=pk).update(view_count=F('view_count') + 1)
     thesis.refresh_from_db()
+    
+    recommendations = get_thesis_recommendations(thesis.title)
+    
     context = {
         'thesis': thesis,
         'stats': _get_site_stats(),
+        'recommendations': recommendations,
     }
     return render(request, 'thesis_detail.html', context)
 

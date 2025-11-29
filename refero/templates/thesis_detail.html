@@ -40,5 +40,34 @@
     {% endif %}
     <p class="text-xs text-gray-500 mt-2">Uploaded by: {{ thesis.uploaded_by.username }} on {{ thesis.date_added|date:"F j, Y" }}</p>
   </div>
+
+  {% if recommendations %}
+  <div class="mt-8 border-t pt-6">
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">Recommended Papers</h2>
+    <div class="grid gap-4">
+      {% for paper in recommendations %}
+      <div class="p-4 border rounded-lg hover:bg-gray-50 transition">
+        <h3 class="font-medium text-blue-600">
+            {% if paper.paperId %}
+            <a href="https://www.semanticscholar.org/paper/{{ paper.paperId }}" target="_blank" rel="noopener noreferrer">{{ paper.title }}</a>
+            {% else %}
+            {{ paper.title }}
+            {% endif %}
+        </h3>
+        <p class="text-sm text-gray-600 mt-1">
+          {% for author in paper.authors %}
+            {{ author.name }}{% if not forloop.last %}, {% endif %}
+          {% endfor %}
+          {% if paper.year %} • {{ paper.year }}{% endif %}
+        </p>
+        {% if paper.abstract %}
+        <p class="text-sm text-gray-500 mt-2 line-clamp-2">{{ paper.abstract }}</p>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    <p class="text-xs text-gray-400 mt-4">Powered by Semantic Scholar</p>
+  </div>
+  {% endif %}
 </div>
 {% endblock %}

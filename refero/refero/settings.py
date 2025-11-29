@@ -184,6 +184,15 @@ EMAIL_BACKEND = "anymail.backends.sendgrid.EmailBackend"
 ANYMAIL = {
     "SENDGRID_API_KEY": os.environ.get('SENDGRID_API_KEY'),
 }
+
+SEMANTIC_SCHOLAR_CONFIG = {
+    "API_KEY": os.environ.get("SEMANTIC_SCHOLAR_API_KEY")
+}
+
+headers = {
+    'x-api-key': SEMANTIC_SCHOLAR_CONFIG["API_KEY"],
+}
+
 DEFAULT_FROM_EMAIL = 'Refero Team <referopalsu@gmail.com>'
 
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
