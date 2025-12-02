@@ -119,11 +119,15 @@ def get_paper_id(title: str) -> str | None:
         return None
     return None
 
-def get_thesis_recommendations(thesis_title: str) -> list:
+def get_thesis_recommendations(thesis_title: str, ss_paper_id: str = None) -> list:
     """
     Fetches related paper recommendations using a two-step process: lookup and recommendation.
+    Uses stored ss_paper_id if available, otherwise looks it up by title.
     """
-    paper_id = get_paper_id(thesis_title)
+    paper_id = ss_paper_id
+    
+    if not paper_id:
+        paper_id = get_paper_id(thesis_title)
     
     if not paper_id:
         print(f"No Semantic Scholar ID found for: {thesis_title}")
@@ -241,6 +245,13 @@ def frontend_upload(request):
             thesis.uploaded_by = request.user
             thesis.save()
             form.save_m2m()
+
+            # Part 2: Integrate Lookup into the Creation Logic
+            ss_id = get_paper_id(thesis.title)
+            if ss_id:
+                thesis.ss_paper_id = ss_id
+                thesis.save()
+
             messages.success(request, 'Thesis uploaded successfully.')
             return redirect('theses')
     else:
@@ -274,7 +285,7 @@ def thesis_detail(request, pk):
     Thesis.objects.filter(pk=pk).update(view_count=F('view_count') + 1)
     thesis.refresh_from_db()
     
-    recommendations = get_thesis_recommendations(thesis.title)
+    recommendations = get_thesis_recommendations(thesis.title, thesis.ss_paper_id)
     
     context = {
         'thesis': thesis,

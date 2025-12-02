@@ -40,6 +40,7 @@ class Thesis(BaseModel):
     tags = models.ManyToManyField('Tag', blank=True, related_name='theses')
     pdf_file = models.FileField(upload_to='theses_pdf/', verbose_name="Thesis PDF File", blank=True)
     view_count = models.PositiveIntegerField(default=0)
+    ss_paper_id = models.CharField(max_length=100, null=True, blank=True, unique=True)
 
     def __str__(self):
         return self.title
