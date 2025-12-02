@@ -4,73 +4,123 @@
 {% block title %}Refero • Home{% endblock %}
 
 {% block content %}
-<div class="space-y-10">
-  <header class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-3xl p-10 shadow-lg">
-    <h1 class="text-4xl font-semibold">Refero Thesis Library</h1>
-    <p class="text-lg text-blue-100 mt-2">Discover, upload, and promote PALSU theses spanning every college.</p>
-    <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-blue-50">
-      <div>
-        <p class="text-xs uppercase tracking-wide">Theses</p>
-        <p class="text-2xl font-bold">{{ stats.thesis_count }}</p>
-      </div>
-      <div>
-        <p class="text-xs uppercase tracking-wide">Colleges</p>
-        <p class="text-2xl font-bold">{{ stats.college_count }}</p>
-      </div>
-      <div>
-        <p class="text-xs uppercase tracking-wide">Programs</p>
-        <p class="text-2xl font-bold">{{ stats.program_count }}</p>
-      </div>
-      <div>
-        <p class="text-xs uppercase tracking-wide">Tags</p>
-        <p class="text-2xl font-bold">{{ stats.tag_count }}</p>
-      </div>
-    </div>
-  </header>
+<div class="max-w-7xl mx-auto space-y-12 pb-12">
+    
+    <header class="relative overflow-hidden bg-gradient-to-br from-sky-600 to-blue-700 text-white rounded-3xl shadow-xl shadow-sky-900/10 isolate">
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-white/10 blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-sky-400/20 blur-3xl"></div>
 
-  <section>
-    <h2 class="text-xl font-semibold mb-4 text-gray-800">Filter by Program</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-      <a href="{% url 'home' %}"
-         class="flex flex-col items-center justify-center p-6 border rounded-2xl bg-white shadow-sm transition hover:shadow-lg {% if not active_program_name %}border-blue-600 ring-2 ring-blue-600{% else %}border-gray-200 hover:border-gray-300{% endif %}">
-        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-gray-100 text-gray-500">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a8 8 0 11-16 0 8 8 0 0116 0z" /></svg>
+        <div class="relative p-8 md:p-12 lg:p-16">
+            <div class="max-w-3xl">
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
+                    Refero Thesis Library
+                </h1>
+                <p class="text-lg md:text-xl text-sky-100 font-medium leading-relaxed max-w-2xl">
+                    Discover, upload, and promote PALSU theses spanning every college. The central hub for academic excellence.
+                </p>
+            </div>
+
+            <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="p-4 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10">
+                    <p class="text-xs uppercase tracking-wider text-sky-200 font-semibold mb-1">Theses</p>
+                    <p class="text-3xl font-bold text-white">{{ stats.thesis_count }}</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10">
+                    <p class="text-xs uppercase tracking-wider text-sky-200 font-semibold mb-1">Colleges</p>
+                    <p class="text-3xl font-bold text-white">{{ stats.college_count }}</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10">
+                    <p class="text-xs uppercase tracking-wider text-sky-200 font-semibold mb-1">Programs</p>
+                    <p class="text-3xl font-bold text-white">{{ stats.program_count }}</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10">
+                    <p class="text-xs uppercase tracking-wider text-sky-200 font-semibold mb-1">Tags</p>
+                    <p class="text-3xl font-bold text-white">{{ stats.tag_count }}</p>
+                </div>
+            </div>
         </div>
-        <span class="mt-3 font-medium text-gray-700">All Programs</span>
-      </a>
+    </header>
 
-      {% for program in filterable_programs %}
-        <a href="{% url 'home' %}?program={{ program.name }}"
-           class="flex flex-col items-center justify-center p-6 border rounded-2xl bg-white shadow-sm transition hover:shadow-lg {% if active_program_name == program.name %}border-blue-600 ring-2 ring-blue-600{% else %}border-gray-200 hover:border-gray-300{% endif %}">
-          <img src="{% static program.logo_url %}" alt="{{ program.name }}" class="h-16 w-16 rounded-full object-cover">
-          <span class="mt-3 font-medium text-gray-700 text-center">{{ program.name }}</span>
-        </a>
-      {% endfor %}
-    </div>
-  </section>
+    <section>
+        <div class="flex items-center gap-2 mb-6">
+            <div class="h-6 w-1 bg-sky-600 rounded-full"></div>
+            <h2 class="text-xl font-bold text-slate-800">Browse by Program</h2>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <a href="{% url 'home' %}"
+               class="group relative flex flex-col items-center justify-center p-8 bg-white border rounded-2xl transition-all duration-300 
+               {% if not active_program_name %}border-sky-500 ring-4 ring-sky-500/10 shadow-lg shadow-sky-100 transform -translate-y-1{% else %}border-slate-200 shadow-sm hover:shadow-md hover:border-sky-300 hover:-translate-y-1{% endif %}">
+                <div class="h-16 w-16 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-sky-600 group-hover:bg-sky-50 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a8 8 0 11-16 0 8 8 0 0116 0z" />
+                    </svg>
+                </div>
+                <span class="mt-4 font-semibold text-slate-700 group-hover:text-sky-700 transition-colors">All Programs</span>
+            </a>
 
-  <section class="mt-10">
-    <div class="flex items-center justify-between">
-      <h2 class="text-2xl font-semibold">Featured Theses</h2>
-      <a href="{% url 'theses' %}" class="text-blue-600 hover:underline text-sm">See all</a>
-    </div>
-    <div class="mt-6 grid gap-6 md:grid-cols-2">
-      {% for thesis in featured_theses %}
-        <article class="border border-gray-200 rounded-2xl p-6 shadow-sm bg-white">
-          <p class="text-sm text-gray-500">{{ thesis.college.college_name }} • {{ thesis.program.prog_name }}</p>
-          <a href="{% url 'thesis_detail' thesis.pk %}" class="block mt-2">
-            <h3 class="text-xl font-semibold hover:text-blue-600 transition">{{ thesis.title }}</h3>
-          </a>
-          <p class="text-sm text-gray-700 mt-3 leading-relaxed">{{ thesis.abstract|truncatechars:160 }}</p>
-          <div class="mt-4 text-sm text-gray-500">
-            <p>Authors: {{ thesis.authors }}</p>
-            <p>Year: {{ thesis.year_submitted }}</p>
-          </div>
-        </article>
-      {% empty %}
-        <div class="text-gray-500">No theses have been added yet.</div>
-      {% endfor %}
-    </div>
-  </section>
+            {% for program in filterable_programs %}
+                <a href="{% url 'home' %}?program={{ program.name }}"
+                   class="group relative flex flex-col items-center justify-center p-8 bg-white border rounded-2xl transition-all duration-300
+                   {% if active_program_name == program.name %}border-sky-500 ring-4 ring-sky-500/10 shadow-lg shadow-sky-100 transform -translate-y-1{% else %}border-slate-200 shadow-sm hover:shadow-md hover:border-sky-300 hover:-translate-y-1{% endif %}">
+                    <div class="relative h-16 w-16 rounded-full p-1 border border-slate-100 bg-white group-hover:border-sky-100 transition-colors">
+                        <img src="{% static program.logo_url %}" alt="{{ program.name }}" class="h-full w-full rounded-full object-cover">
+                    </div>
+                    <span class="mt-4 font-semibold text-slate-700 text-center group-hover:text-sky-700 transition-colors">{{ program.name }}</span>
+                </a>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section>
+        <div class="flex items-end justify-between mb-6">
+            <div class="flex items-center gap-2">
+                <div class="h-6 w-1 bg-sky-600 rounded-full"></div>
+                <h2 class="text-xl font-bold text-slate-800">Featured Theses</h2>
+            </div>
+            <a href="{% url 'theses' %}" class="group flex items-center gap-1 text-sm font-semibold text-sky-600 hover:text-sky-700 transition-colors">
+                View all items
+                <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </a>
+        </div>
+
+        <div class="grid gap-6 md:grid-cols-2">
+            {% for thesis in featured_theses %}
+                <article class="flex flex-col h-full p-6 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md hover:border-sky-200 transition-all duration-300 group">
+                    <div class="flex items-center gap-2 text-xs font-medium text-slate-500 mb-3">
+                        <span class="bg-slate-100 text-slate-600 px-2 py-1 rounded-md">{{ thesis.college.college_name }}</span>
+                        <span>•</span>
+                        <span class="text-sky-600">{{ thesis.program.prog_name }}</span>
+                    </div>
+
+                    <a href="{% url 'thesis_detail' thesis.pk %}" class="block mb-3">
+                        <h3 class="text-xl font-bold text-slate-900 group-hover:text-sky-600 transition-colors line-clamp-2">
+                            {{ thesis.title }}
+                        </h3>
+                    </a>
+
+                    <p class="text-sm text-slate-500 leading-relaxed mb-6 line-clamp-3 flex-1">
+                        {{ thesis.abstract|truncatechars:160 }}
+                    </p>
+
+                    <div class="pt-4 mt-auto border-t border-slate-100 flex items-center justify-between text-sm text-slate-500">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                            <span class="truncate max-w-[150px]">{{ thesis.authors }}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            <span>{{ thesis.year_submitted }}</span>
+                        </div>
+                    </div>
+                </article>
+            {% empty %}
+                <div class="col-span-full py-12 text-center rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50">
+                    <svg class="mx-auto h-12 w-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <p class="mt-2 text-sm text-slate-500 font-medium">No featured theses found.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
 </div>
 {% endblock %}

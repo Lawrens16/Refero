@@ -12,6 +12,29 @@
     </form>
   </div>
 
+  {% if available_tags %}
+  <div class="rounded-2xl border border-slate-200/40 p-4 flex flex-wrap gap-2 bg-transparent">
+    <span class="text-xs uppercase tracking-[0.2em] text-slate-400">Tags</span>
+    {% for tag in available_tags %}
+      <a href="{% url 'theses' %}?{% if query %}q={{ query|urlencode }}&amp;{% endif %}tag={{ tag.name|urlencode }}"
+         class="tag-chip {% if tag_filter|lower == tag.name|lower %}is-active{% endif %}">
+        {{ tag.name }}
+      </a>
+    {% endfor %}
+    {% if tag_filter %}
+      <a href="{% url 'theses' %}?{% if query %}q={{ query|urlencode }}{% endif %}"
+         class="tag-chip clear-filter">Clear Tag</a>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  {% if tag_filter %}
+    <div class="rounded-2xl border border-slate-200/60 bg-white/60 px-5 py-3 flex items-center justify-between text-sm text-slate-200">
+      <span>Filtering by tag <strong>{{ tag_filter }}</strong></span>
+      <a href="{% url 'theses' %}?{% if query %}q={{ query|urlencode }}{% endif %}" class="text-sky-300 hover:text-white">Remove filter</a>
+    </div>
+  {% endif %}
+
   {% if request.user.is_authenticated and not query %}
     <section>
       <h2 class="text-2xl font-semibold text-gray-900 mb-4">My Theses</h2>
@@ -61,7 +84,8 @@
         {% endif %}
         <div class="mt-4 text-xs text-gray-600">
           {% for tag in thesis.tags.all %}
-            <span class="inline-flex items-center rounded-full px-3 py-1 bg-gray-100 text-gray-500 mr-2">{{ tag.name }}</span>
+            <a href="{% url 'theses' %}?{% if query %}q={{ query|urlencode }}&amp;{% endif %}tag={{ tag.name|urlencode }}"
+               class="tag-chip">{{ tag.name }}</a>
           {% empty %}
             <span class="text-gray-400">No tags</span>
           {% endfor %}
