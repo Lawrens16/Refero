@@ -55,9 +55,12 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'pwa',
     'thesis',
+    'allauth.socialaccount.providers.facebook'
 ]
 
 SITE_ID = 2
+
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
