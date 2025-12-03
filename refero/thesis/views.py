@@ -209,6 +209,7 @@ def frontend_home(request):
 @login_required
 def frontend_theses(request):
     query = request.GET.get('q', '').strip()
+    tag_filter = request.GET.get('tag', '').strip()
     base_qs = _build_thesis_queryset().order_by('-date_added')
 
     if query:
@@ -218,6 +219,9 @@ def frontend_theses(request):
             | Q(abstract__icontains=query)
             | Q(tags__name__icontains=query)
         ).distinct()
+
+    if tag_filter:
+        base_qs = base_qs.filter(tags__name__iexact=tag_filter)
 
     paginator = Paginator(base_qs, 9)
     page_number = request.GET.get('page')
@@ -230,6 +234,8 @@ def frontend_theses(request):
     context = {
         'page_obj': page_obj,
         'query': query,
+        'tag_filter': tag_filter,
+        'available_tags': Tag.objects.order_by('name')[:30],
         'user_uploads': user_uploads,
         'stats': _get_site_stats(),
     }
