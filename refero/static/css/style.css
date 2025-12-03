@@ -113,7 +113,7 @@ main,
 }
 
 .theme-nebula main {
-  padding-top: 3rem;
+  padding-top: 6.5rem;
   padding-bottom: 3rem;
   position: relative;
   z-index: 1;
@@ -269,9 +269,6 @@ main,
 }
 
 /* Cards + floating blocks */
-  transform-origin: top right;
-  border-radius: 1.1rem;
-  padding: 0.5rem 0;
 .theme-nebula :is(.rounded-2xl,
     .rounded-xl,
     .rounded-lg,
