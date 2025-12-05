@@ -1,23 +1,29 @@
+import logging
+import random
+from typing import Optional
+
+from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import send_mail
 from django.core.paginator import Paginator
-from django.db.models import Q, F, Sum, Avg
+from django.db.models import Avg, F, Q, Sum
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
-from thesis.forms import ThesisUploadForm
-from thesis.models import Thesis, Program, College, Tag
-
-from django.contrib.auth.models import User
-from django.core.mail import send_mail
-from django.conf import settings
-import random
 import requests
+
+from thesis.forms import ThesisUploadForm
+from thesis.models import College, Program, Tag, Thesis
+
+logger = logging.getLogger(__name__)
+User = get_user_model()
 
 def password_reset_request(request):
     if request.method == 'POST':
@@ -87,14 +93,25 @@ class HomePageView(LoginRequiredMixin, ListView):
 SS_API_BASE_URL = "https://api.semanticscholar.org/graph/v1"
 SS_RECOMMENDATIONS_URL = "https://api.semanticscholar.org/recommendations/v1/papers/forpaper/"
 
-def get_paper_id(title: str) -> str | None:
+
+def _build_ss_headers():
+    api_key = settings.SEMANTIC_SCHOLAR_CONFIG.get("API_KEY")
+    if not api_key:
+        logger.warning("Semantic Scholar API key missing; skipping request")
+        return None
+    return {
+        'x-api-key': api_key,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+    }
+
+def get_paper_id(title: str) -> Optional[str]:
     """Uses the /paper/search endpoint to find a paper's unique ID."""
     search_url = f"{SS_API_BASE_URL}/paper/search"
     
-    headers = {
-        'x-api-key': settings.SEMANTIC_SCHOLAR_CONFIG.get("API_KEY"),
-        'Content-Type': 'application/json'
-    }
+    headers = _build_ss_headers()
+    if not headers:
+        return None
     
     params = {
         'query': title,
@@ -112,10 +129,10 @@ def get_paper_id(title: str) -> str | None:
             return data['data'][0].get('paperId')
         
     except requests.exceptions.RequestException as e:
-        print(f"Error during Semantic Scholar ID lookup for '{title}': {e}")
+        logger.exception("Semantic Scholar lookup failed for '%s'", title)
         return None
-    except Exception as e:
-        print(f"An unexpected error occurred during ID lookup: {e}")
+    except Exception:
+        logger.exception("Unexpected error while looking up Semantic Scholar ID for '%s'", title)
         return None
     return None
 
@@ -130,19 +147,18 @@ def get_thesis_recommendations(thesis_title: str, ss_paper_id: str = None) -> li
         paper_id = get_paper_id(thesis_title)
     
     if not paper_id:
-        print(f"No Semantic Scholar ID found for: {thesis_title}")
+        logger.info("No Semantic Scholar ID found for '%s'", thesis_title)
         return []
 
     recommendations_url = f"{SS_RECOMMENDATIONS_URL}{paper_id}"
     
-    headers = {
-        'x-api-key': settings.SEMANTIC_SCHOLAR_CONFIG.get("API_KEY"),
-        'Content-Type': 'application/json'
-    }
+    headers = _build_ss_headers()
+    if not headers:
+        return []
 
     params = {
+        'limit': 5,
         'fields': 'title,authors.name,year,abstract',
-        'limit': 5
     }
 
     try:
@@ -151,13 +167,13 @@ def get_thesis_recommendations(thesis_title: str, ss_paper_id: str = None) -> li
         data = response.json()
         
         # The recommendations endpoint returns a list of papers under 'recommendedPapers'
-        return data.get('recommendedPapers', [])
+        return data.get('recommendedPapers') or data.get('data', [])
 
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching recommendations for ID {paper_id}: {e}")
+        logger.exception("Semantic Scholar recommendation fetch failed for %s", paper_id)
         return []
-    except Exception as e:
-        print(f"An unexpected error occurred during recommendation fetch: {e}")
+    except Exception:
+        logger.exception("Unexpected error while fetching recommendations for %s", paper_id)
         return []
 
 
@@ -255,8 +271,11 @@ def frontend_upload(request):
             # Part 2: Integrate Lookup into the Creation Logic
             ss_id = get_paper_id(thesis.title)
             if ss_id:
-                thesis.ss_paper_id = ss_id
-                thesis.save()
+                if Thesis.objects.filter(ss_paper_id=ss_id).exists():
+                    logger.info("Semantic Scholar ID %s already used; skipping assignment for thesis %s", ss_id, thesis.pk)
+                else:
+                    thesis.ss_paper_id = ss_id
+                    thesis.save(update_fields=['ss_paper_id'])
 
             messages.success(request, 'Thesis uploaded successfully.')
             return redirect('theses')
